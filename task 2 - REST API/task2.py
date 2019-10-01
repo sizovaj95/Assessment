@@ -31,14 +31,14 @@ def new_item():
 
 ## Edit item in existing list 
 @app.route('/edit/<string:item>',methods=['PUT']) ##PUT method is used
-def edititem(item):
+def edit_item(item):
     food=[food for food in items if food['Name']==item] ## find all instances with the specified food name (only one in this case) which has to be edited 
     food[0]['Name']=request.json['name'] ## replace this food name with desired one
     return jsonify({'Food':food[0]}) ##return dictionary of dictionaries with JSON representation
 
 ## Delete item from the list
 @app.route('/delete/<string:item>',methods=['DELETE']) ## DELETE method is used
-def deleteitem(item):
+def delete_item(item):
     food=[food for food in items if food['Name']==item] ## find food item to be deleted
     items.remove(food[0]) ## remove this item from the list 
     return jsonify({'Food':items}) ##return dictionary of dictionaries with JSON representation
