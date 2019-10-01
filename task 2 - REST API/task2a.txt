@@ -3,4 +3,4 @@ CREATE TABLE 'Cake' (
   'Ingredient_name' VARCHAR(45) NOT NULL,
   'Amount' VARCHAR(10) NOT NULL,
   'Description' VARCHAR(100) NULL,
-  PRIMARY KEY ('Ingredient ID'));
+  PRIMARY KEY ('Ingredient_ID'));
