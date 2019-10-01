@@ -1,0 +1,6 @@
+Unfortunately, I wasn't able to complete the second task in full, since I have never encountered with REST APIs before, but I've researched the topic and methods and competed the task to the best of my abilities and allowed time. 
+
+The txt file "task2a" contains a code for creating a table for recipies as I would do it in MySQL. It has columns for ingredient id, name, amount needed and recipe description.
+
+"task2.py" contains the code for creating REST APIs. I couldn't connect Python and MySQL to fully complete the task. So, to demonstrate GET request, I've created two html files (in templates folder) with tables of ingredient for two cakes and used them for this part. For the rest parts I have created simplified data source in Python, list of dictionaries, with key values being the same for all dictionaries (called "Name") and values being different names of cakes. This list was used to demontrate PUT, POST and DELETE requests as well as GET, where the name of cake should be specified and only this cake will be output. 
+
