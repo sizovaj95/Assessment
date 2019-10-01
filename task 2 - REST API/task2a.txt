@@ -1,6 +1,6 @@
 CREATE TABLE 'Cake' (
-  'Ingredient ID' VARCHAR(10) NOT NULL,
-  'Ingredient name' VARCHAR(45) NOT NULL,
+  'Ingredient_ID' VARCHAR(10) NOT NULL,
+  'Ingredient_name' VARCHAR(45) NOT NULL,
   'Amount' VARCHAR(10) NOT NULL,
   'Description' VARCHAR(100) NULL,
   PRIMARY KEY ('Ingredient ID'));
