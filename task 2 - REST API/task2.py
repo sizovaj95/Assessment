@@ -13,10 +13,10 @@ def honey_cake(): ##define function to get information for honey cake
 
 ###Simplified version of a task
 
-##Create a list of dictionaries with some names of food
+##Create a list of dictionaries with some names of food, which is to be used in the rest of tasks
 items=[{'Name':'Apple_pie'}, {'Name':'Honey_cake'},{'Name':'Carrot_cake'}]
 
-## Code to return a specific item, to be specified when calling a function
+## Code to return only one item from existing list, specified by user
 @app.route('/item/<string:item>') ##/<string:item> specify title of food (which is string), GET method is default, no need to include into "route"
 def choose_one(item): ## define a funciton, with one parameter (name of food specified earlier)
     food=[food for food in items if food['Name']==item] # create a list of food items with the food title specified when calling the function (only one in this case, since name is unique)
@@ -31,14 +31,14 @@ def new_item():
 
 ## Edit item in existing list 
 @app.route('/edit/<string:item>',methods=['PUT']) ##PUT method is used
-def edit_item(item):
+def edit_item(item): #define a function with one parameter, item to be edited
     food=[food for food in items if food['Name']==item] ## find all instances with the specified food name (only one in this case) which has to be edited 
     food[0]['Name']=request.json['name'] ## replace this food name with desired one
     return jsonify({'Food':food[0]}) ##return dictionary of dictionaries with JSON representation
 
 ## Delete item from the list
 @app.route('/delete/<string:item>',methods=['DELETE']) ## DELETE method is used
-def delete_item(item):
+def delete_item(item):#define a function with one parameter, item to be removed
     food=[food for food in items if food['Name']==item] ## find food item to be deleted
     items.remove(food[0]) ## remove this item from the list 
     return jsonify({'Food':items}) ##return dictionary of dictionaries with JSON representation
