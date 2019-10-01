@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, jsonify ##import neccessary m
 app = Flask(__name__) ##initialize Flask object
 
 ## The first two functions open html files with ingredients for apple pie and honey cake
-@app.route('/applepie')
+@app.route('/applepie')## route to bind URL to the function
 def apple_pie(): ##define function to get information for apple pie
     return render_template('apple_pie.html') ## render_template to render html file with table to the browser
 
