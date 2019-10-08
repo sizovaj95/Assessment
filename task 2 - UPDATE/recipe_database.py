@@ -6,7 +6,7 @@ app = Flask(__name__)##initialize Flask object
 ### Configure data base for using within Flask 
 app.config['MYSQL_HOST'] = 'localhost' #name of the host to conncet to
 app.config['MYSQL_USER'] = 'root' #user name to authenticate as
-app.config['MYSQL_PASSWORD'] = 'Newford08' # authentication password
+app.config['MYSQL_PASSWORD'] = 'some_password' # authentication password
 app.config['MYSQL_DB'] = 'recipies_database' #data base to use
 
 mysql = MySQL(app) #create MySQL instance
@@ -16,11 +16,11 @@ Get all recipies ids and names. A function to return all existing recipies with 
 '''
 @app.route('/recipies') # route to bind URL to the function. In a browser would type in localhost:5000/recipies
 def all_recipies():
-    cur = mysql.connection.cursor() #instantiate cursor object to perform data base perations. Cursor object interacts with MySQL server
+    cur = mysql.connection.cursor() #instantiate cursor object to perform data base operations. Cursor object interacts with MySQL server
     resultValue = cur.execute("select * from recipe")# execute SQL query to select everything from recipe table
     if resultValue > 0: # check if resulting table has at least one row
         recipeDetails = cur.fetchall() # if condition is satisfied, get all rows resulting from the query
-        return  render_template('table.html',recipeDetails=recipeDetails), 200 # return resulting table using html template,
+        return  render_template('table.html',recipeDetails=recipeDetails), 200 # return resulting table using html template, found in templates folder
     else:
         abort(404) # if condition is not satisfied, return 'Not found' page.
 
@@ -104,7 +104,7 @@ def add_recipe(new_recipe):
     return redirect('/recipies')  # redirect to the page with recipies name and IDs
 
 '''
-Add new ingredient to the ingredients table. Similar to the previous part, with the same problem of Integrity error. Here a new ingredient name is specified in the URL and this new ingredient is added to the existing table, with ID generated automatically as well. A successful operation redirects to the page with all ingredients and new ingredient appears there too.
+Add new ingredient to the ingredients table. Similar to the previous part, with the same problem of Integrity error. Here a new ingredient name is specified in the URL and this new ingredient is added to the existing table of ingredients, with ID generated automatically as well. A successful operation redirects to the page with all ingredients and new ingredient appears there too.
 '''
 
 @app.route('/add_ingredient/<string:new_ingredient>')
@@ -116,7 +116,7 @@ def add_ingredient(new_ingredient):
     return redirect('/ingredients')
 
 '''
-Add amount needed for new recipe and new ingredient into the recipe_ingred table. This table references two other tables with information about recipies and ingredients. To avoid breaking referential integrity constraint, firstly have to create new recipe in recipe table and add ingredients for this recipe to the ingredient table and only then combine them in the child table with amounts. Otherwise an IntegrityError will be raised again. This situation has to be handled, so that it is not possible to input non-existing names.
+Add amount needed for new recipe and new ingredient into the recipe_ingred table. This table references two other tables with information about recipies and ingredients. To avoid breaking referential integrity constraint, firstly have to create new recipe in recipe table and add ingredients for this recipe to the ingredient table and only then combine them in the child table with amounts. Otherwise an IntegrityError will be raised again. This situation has to be handled, so that it is not possible to input non-existing IDs (or names).
 Here POST method is used along with GET. When a neccessary URL is typed in, a user gets a form to fill in asking to specify an ID of the recipe, an ID of the ingredient and the amount of the ingredient for this recipe. This information is then inserted into recipe_ingred table. When this is done, the user is redirected to the page showing all recipies names with corresponding ingredient names and amounts needed for the recipe.
 '''
 
