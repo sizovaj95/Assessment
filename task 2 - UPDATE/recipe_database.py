@@ -3,7 +3,7 @@ from flask_mysqldb import MySQL
 
 app = Flask(__name__)##initialize Flask object
 
-### Configure data base for usinf within Flask 
+### Configure data base for using within Flask 
 app.config['MYSQL_HOST'] = 'localhost' #name of the host to conncet to
 app.config['MYSQL_USER'] = 'root' #user name to authenticate as
 app.config['MYSQL_PASSWORD'] = 'Newford08' # authentication password
