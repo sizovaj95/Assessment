@@ -3,7 +3,7 @@ from flask_mysqldb import MySQL
 
 app = Flask(__name__)##initialize Flask object
 
-### Configure data base for usinf within Flask 
+### Configure data base for using within Flask 
 app.config['MYSQL_HOST'] = 'localhost' #name of the host to conncet to
 app.config['MYSQL_USER'] = 'root' #user name to authenticate as
 app.config['MYSQL_PASSWORD'] = 'some_password' # authentication password
@@ -17,10 +17,10 @@ Get all recipies ids and names. A function to return all existing recipies with 
 @app.route('/recipies') # route to bind URL to the function. In a browser would type in localhost:5000/recipies
 def all_recipies():
     cur = mysql.connection.cursor() #instantiate cursor object to perform data base operations. Cursor object interacts with MySQL server
-    resultValue = cur.execute("select * FROM recipe ORDER BY recipe_id")# execute SQL query to select everything from recipe table ordered by ID
+    resultValue = cur.execute("SELECT * FROM recipe ORDER BY recipe_id")# execute SQL query to select everything from recipe table ordered by ID
     if resultValue > 0: # check if resulting table has at least one row
         recipeDetails = cur.fetchall() # if condition is satisfied, get all rows resulting from the query
-        return  render_template('table.html',recipeDetails=recipeDetails) # return resulting table using html template,
+        return  render_template('table.html',recipeDetails=recipeDetails) # return resulting table using html template,found in templates folder
     else:
         abort(404) # if condition is not satisfied, return 'Not found' page.
 
@@ -56,7 +56,7 @@ Get a specific recipe ingredients with their amounts by recipe name. Specify in 
 @app.route('/recipies/<string:recipe>')#route with parameter
 def recipies(recipe): #define funciton with parameter corresponding to the name of the recipe
     cur = mysql.connection.cursor()
-    resultValue = cur.execute("select ingred_name, amount from recipe_ingred left join ingredient on ing_id=ingred_id where rec_id in (select recipe_id from recipe where recipe_name= %s)",[recipe]) #execute SQL query. Insert a parameter value (recipe name) as a string into SQL query (%s)
+    resultValue = cur.execute("SELECT ingred_name, amount FROM recipe_ingred LEFT JOIN ingredient ON ing_id=ingred_id WHERE rec_id in (SELECT recipe_id FROM recipe WHERE recipe_name= %s)",[recipe]) #execute SQL query. Insert a parameter value (recipe name) as a string into SQL query (%s)
     if resultValue > 0:
         recipeDetails = cur.fetchall()
         return  render_template('table.html',recipeDetails=recipeDetails)
@@ -70,7 +70,7 @@ Get recipe name and ID by ingredient name. In URL specify the name of the ingred
 @app.route('/<string:ingred_name>')
 def recipe_by_ingred(ingred_name):
     cur = mysql.connection.cursor()
-    resultValue = cur.execute("select * from recipe where recipe_id in (select rec_id from recipe_ingred where ing_id in (select ingred_id from ingredient where ingred_name=%s))",[ingred_name])
+    resultValue = cur.execute("SELECT * FROM recipe WHERE recipe_id in (SELECT rec_id FROM recipe_ingred WHERE ing_id in (SELECT ingred_id FROM ingredient WHERE ingred_name=%s))",[ingred_name])
     if resultValue > 0:
         recipeDetails = cur.fetchall()
         return render_template('table.html',recipeDetails=recipeDetails)
@@ -83,7 +83,7 @@ Get recipe name and ID by ingredient ID. The same as above, except has to specif
 @app.route('/<int:ingred_id>')
 def recipe_by_ingred_id(ingred_id):
     cur = mysql.connection.cursor()
-    resultValue = cur.execute("select * from recipe where recipe_id in (select rec_id from recipe_ingred where ing_id= %s )",[ingred_id])
+    resultValue = cur.execute("SELECT * FROM recipe WHERE recipe_id in (SELECT rec_id FROM recipe_ingred WHERE ing_id= %s )",[ingred_id])
     if resultValue > 0:
         recipeDetails = cur.fetchall()
         return render_template('table.html',recipeDetails=recipeDetails)
