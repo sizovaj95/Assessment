@@ -7,7 +7,7 @@ app = Flask(__name__)##initialize Flask object
 app.config['MYSQL_HOST'] = 'localhost' #name of the host to conncet to
 app.config['MYSQL_USER'] = 'root' #user name to authenticate as
 app.config['MYSQL_PASSWORD'] = 'some_password' # authentication password
-app.config['MYSQL_DB'] = 'recipies_database' #data base to use
+app.config['MYSQL_DB'] = 'recipies_database' #database to use
 
 mysql = MySQL(app) #create MySQL instance
 
@@ -91,7 +91,7 @@ def recipe_by_ingred_id(ingred_id):
         return abort(404)
     
 '''
-Add new recipe into recipe table. Type a name of the new recipe into the URL and it will be added into the recipe table. Since recipe ID has AUTO_INCREMENT feature, a new ID will be added automaticlly. This helps to avoid primary key constraint, since this ensures that no ID is repeated. 
+Add new recipe into recipe table. Type 'add_recipe' followed by a name of the new recipe into the URL and it will be added into the recipe table. Since recipe ID has AUTO_INCREMENT feature, a new ID will be added automaticlly. This helps to avoid primary key constraint, since this ensures that no ID is repeated. 
 A possible problem which is not dealt with here is avoiding repeating names, since recipe name must be unique. Currently an error page which says 'Integrity error' appears when already existing name is attempted to be input. 
 If the operation is successful (the name entered does not exist already) the program redirects you to the page with all recipies names and IDs. A new recipe will appear there as well.
 '''
@@ -154,11 +154,11 @@ def edit_amount():
         cur.execute("UPDATE recipe_ingred SET amount=%s WHERE rec_id = (SELECT recipe_id FROM recipe WHERE recipe_name=%s) AND ing_id = (SELECT ingred_id FROM ingredient WHERE ingred_name=%s)",(new_amount, recipe_name,ingred_name))
         mysql.connection.commit()
         cur.close()
-        return redirect('/recipies/{}'.format(recipe_name))
+        return redirect('/recipies/{}'.format(recipe_name))#insert recipe name specified in the form to the URL
     return render_template('edit_amount.html')
 
 '''
-Removes a recipe from the recipe table and corresponding entries from recipe_ingred table (ON DELETE CASCADE). Specify a recipe to delete in the URL and it will be removed from all tables where it was mentioned. After executing SQL query, the user is redirected to the page showing all remaining recipies. 
+Removes a recipe from the recipe table and corresponding entries from recipe_ingred table (ON DELETE CASCADE). Specify a recipe to delete in the URL and it will be removed from all tables where it was mentioned. However ingredients for that recipe (if there were any new) will stay in the ingredient table. After executing SQL query, the user is redirected to the page showing all remaining recipies. 
 The program does not return any error if the item to be removed does not exist in the recipe table.
 Works similarly to adding recipe, only SQL query is different
 '''
