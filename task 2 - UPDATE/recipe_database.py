@@ -17,10 +17,10 @@ Get all recipies ids and names. A function to return all existing recipies with 
 @app.route('/recipies') # route to bind URL to the function. In a browser would type in localhost:5000/recipies
 def all_recipies():
     cur = mysql.connection.cursor() #instantiate cursor object to perform data base operations. Cursor object interacts with MySQL server
-    resultValue = cur.execute("select * from recipe")# execute SQL query to select everything from recipe table
+    resultValue = cur.execute("SELECT * FROM recipe ORDER BY recipe_id")# execute SQL query to select everything from recipe table, ordered by ID
     if resultValue > 0: # check if resulting table has at least one row
         recipeDetails = cur.fetchall() # if condition is satisfied, get all rows resulting from the query
-        return  render_template('table.html',recipeDetails=recipeDetails), 200 # return resulting table using html template, found in templates folder
+        return  render_template('table.html',recipeDetails=recipeDetails) # return resulting table using html template, found in templates folder
     else:
         abort(404) # if condition is not satisfied, return 'Not found' page.
 
@@ -33,7 +33,7 @@ def all_ingredients():
     resultValue = cur.execute("SELECT * FROM ingredient ORDER BY ingred_id")#select everything from ingredients table, ordered by ingredient ID
     if resultValue > 0:
         recipeDetails = cur.fetchall()
-        return  render_template('table.html',recipeDetails=recipeDetails), 200
+        return  render_template('table.html',recipeDetails=recipeDetails)
     else:
         abort(404)
         
@@ -46,7 +46,7 @@ def all_amounts():
     resultValue = cur.execute("SELECT recipe_name, ingred_name, amount FROM recipe_ingred LEFT JOIN ingredient ON ing_id=ingred_id LEFT JOIN recipe ON rec_id=recipe_id")
     if resultValue > 0:
         recipeDetails = cur.fetchall()
-        return  render_template('amounts.html',recipeDetails=recipeDetails), 200
+        return  render_template('amounts.html',recipeDetails=recipeDetails)
     else:
         abort(404)
     
@@ -59,7 +59,7 @@ def recipies(recipe): #define funciton with parameter corresponding to the name 
     resultValue = cur.execute("select ingred_name, amount from recipe_ingred left join ingredient on ing_id=ingred_id where rec_id in (select recipe_id from recipe where recipe_name= %s)",[recipe]) #execute SQL query. Insert a parameter value (recipe name) as a string into SQL query (%s)
     if resultValue > 0:
         recipeDetails = cur.fetchall()
-        return  render_template('table.html',recipeDetails=recipeDetails), 200
+        return  render_template('table.html',recipeDetails=recipeDetails)
     else:
         abort(404)
        
@@ -73,7 +73,7 @@ def recipe_by_ingred(ingred_name):
     resultValue = cur.execute("select * from recipe where recipe_id in (select rec_id from recipe_ingred where ing_id in (select ingred_id from ingredient where ingred_name=%s))",[ingred_name])
     if resultValue > 0:
         recipeDetails = cur.fetchall()
-        return render_template('table.html',recipeDetails=recipeDetails), 200
+        return render_template('table.html',recipeDetails=recipeDetails)
     else:
         abort(404)
   
@@ -86,7 +86,7 @@ def recipe_by_ingred_id(ingred_id):
     resultValue = cur.execute("select * from recipe where recipe_id in (select rec_id from recipe_ingred where ing_id= %s )",[ingred_id])
     if resultValue > 0:
         recipeDetails = cur.fetchall()
-        return render_template('table.html',recipeDetails=recipeDetails), 200
+        return render_template('table.html',recipeDetails=recipeDetails)
     else:
         return abort(404)
     
